@@ -43,14 +43,16 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                 CustomTextField(
                   controller: _nameController,
                   hintText: 'Enter your nickname',
+                  obscure: false,
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
                   controller: _gameIdController,
                   hintText: 'Enter Game ID',
+                  obscure: false,
                 ),
                 SizedBox(height: size.height * 0.045),
-                CustomButton(onTap: () {}, text: 'Join')
+                CustomButton(onTap: () {}, text: 'Join'),
               ]),
         ),
       ),

@@ -6,7 +6,6 @@ import 'package:flutter_socket/widgets/custom_button.dart';
 
 class MainMenuScreen extends StatelessWidget {
   static String routeName = '/main-menu';
-
   const MainMenuScreen({super.key});
 
   void CreateRoom(BuildContext context) {

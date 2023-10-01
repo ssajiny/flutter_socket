@@ -4,9 +4,14 @@ import 'package:flutter_socket/utils/colors.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final bool obscure;
 
-  const CustomTextField(
-      {super.key, required this.controller, required this.hintText});
+  const CustomTextField({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    required this.obscure,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,7 @@ class CustomTextField extends StatelessWidget {
         )
       ]),
       child: TextField(
+        obscureText: obscure,
         controller: controller,
         decoration: InputDecoration(
           fillColor: bgCololor,
