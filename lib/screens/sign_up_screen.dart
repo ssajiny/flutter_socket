@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:flutter_socket/widgets/custom_textfield.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpScreen extends StatefulWidget {
   static String routeName = '/sign-up';
@@ -15,9 +17,18 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final TextEditingController _idController = TextEditingController();
-  final TextEditingController _pwController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwController = TextEditingController();
+
+  Future<void> signUp() async {
+    final res = await supabase.auth.signUp(
+      email: _emailController.text.trim(),
+      password: _pwController.text.trim(),
+    );
+    final Session? session = res.session;
+    final User? user = res.user;
+    print(res);
+  }
 
   @override
   void initState() {
@@ -27,9 +38,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void dispose() {
     super.dispose();
-    _idController.dispose();
-    _pwController.dispose();
     _emailController.dispose();
+    _pwController.dispose();
   }
 
   @override
@@ -50,8 +60,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   fontSize: 70),
               SizedBox(height: size.height * 0.08),
               CustomTextField(
-                controller: _idController,
-                hintText: 'ID',
+                controller: _emailController,
+                hintText: 'e-mail',
                 obscure: false,
               ),
               SizedBox(height: size.height * 0.045),
@@ -61,13 +71,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscure: true,
               ),
               SizedBox(height: size.height * 0.045),
-              CustomTextField(
-                controller: _emailController,
-                hintText: 'email',
-                obscure: false,
-              ),
-              SizedBox(height: size.height * 0.045),
-              CustomButton(onTap: () {}, text: 'Submit'),
+              CustomButton(
+                  onTap: () {
+                    signUp();
+                  },
+                  text: 'Submit'),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

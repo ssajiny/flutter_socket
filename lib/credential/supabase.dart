@@ -1,0 +1,3 @@
+const String url = 'https://ucfzpnokgsdhkilarnov.supabase.co';
+const String anonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjZnpwbm9rZ3NkaGtpbGFybm92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTYxNzE2NTgsImV4cCI6MjAxMTc0NzY1OH0.nkQABzqyih0zclHXYNifSt19H9TSZuk6n3J-0DiSTb0';

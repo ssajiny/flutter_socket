@@ -6,16 +6,15 @@ import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/sign_up_screen.dart';
 import 'package:flutter_socket/screens/splash_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
-import 'package:flutter_socket/assets/constants.dart' as constants;
+import 'package:flutter_socket/credential/supabase.dart' as credential;
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   await Supabase.initialize(
-    url: constants.url,
-    anonKey: constants.anonKey,
+    url: credential.url,
+    anonKey: credential.anonKey,
     realtimeClientOptions: const RealtimeClientOptions(eventsPerSecond: 40),
-    authFlowType: AuthFlowType.pkce,
   );
   runApp(const MyApp());
 }
