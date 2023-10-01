@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: bgCololor),
       routes: {
         MainMenuScreen.routeName: (context) => const MainMenuScreen(),
+        CreateRoomScreen.routeName: (context) => const CreateRoomScreen(),
         JoinRoomScreen.routeName: (context) => const JoinRoomScreen(),
-        CreateRoomScreen.routeName: (context) => const JoinRoomScreen(),
       },
       initialRoute: MainMenuScreen.routeName,
     );
