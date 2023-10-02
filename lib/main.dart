@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_socket/screens/create_room_screen.dart';
-import 'package:flutter_socket/screens/join_room_screen.dart';
+import 'package:flutter_socket/screens/create_screen.dart';
+import 'package:flutter_socket/screens/join_screen.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/sign_up_screen.dart';
@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
         SplashScreen.routeName: (context) => const SplashScreen(),
         LoginScreen.routeName: (context) => const LoginScreen(),
         MainMenuScreen.routeName: (context) => const MainMenuScreen(),
-        CreateRoomScreen.routeName: (context) => const CreateRoomScreen(),
-        JoinRoomScreen.routeName: (context) => const JoinRoomScreen(),
+        CreateScreen.routeName: (context) => const CreateScreen(),
+        JoinScreen.routeName: (context) => const JoinScreen(),
         SignUpScreen.routeName: (context) => const SignUpScreen(),
       },
       initialRoute: SplashScreen.routeName,

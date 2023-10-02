@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
-import 'package:flutter_socket/screens/create_room_screen.dart';
-import 'package:flutter_socket/screens/join_room_screen.dart';
-import 'package:flutter_socket/screens/login_screen.dart';
+import 'package:flutter_socket/screens/create_screen.dart';
+import 'package:flutter_socket/screens/join_screen.dart';
+import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 
 class MainMenuScreen extends StatelessWidget {
@@ -11,31 +10,29 @@ class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
 
   void createRoom(BuildContext context) {
-    Navigator.pushNamed(context, CreateRoomScreen.routeName);
+    Navigator.pushNamed(context, CreateScreen.routeName);
   }
 
   void joinRoom(BuildContext context) {
-    Navigator.pushNamed(context, JoinRoomScreen.routeName);
+    Navigator.pushNamed(context, JoinScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
+    checkSession(context);
     return Scaffold(
       body: Responsive(
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             CustomButton(
                 onTap: () async {
-                  // createRoom(context);
-                  Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.routeName);
-                  await supabase.auth.signOut();
+                  createRoom(context);
                 },
-                text: 'Create Room'),
+                text: 'Create'),
             const SizedBox(
               height: 30,
             ),
-            CustomButton(onTap: () => joinRoom(context), text: 'Join Room'),
+            CustomButton(onTap: () => joinRoom(context), text: 'Join'),
           ]),
         ),
       ),
