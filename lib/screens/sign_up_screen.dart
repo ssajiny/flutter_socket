@@ -19,15 +19,38 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
+  String errorMessage = '';
 
   Future<void> signUp() async {
-    final res = await supabase.auth.signUp(
-      email: _emailController.text.trim(),
-      password: _pwController.text.trim(),
-    );
-    final Session? session = res.session;
-    final User? user = res.user;
-    print(res);
+    try {
+      await supabase.auth.signUp(
+        email: _emailController.text.trim(),
+        password: _pwController.text.trim(),
+      );
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('All Set'),
+            content: const Text('Your account was successfully created.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context)
+                      .pushReplacementNamed(LoginScreen.routeName);
+                },
+                child: const Text('Continue'),
+              ),
+            ],
+          );
+        },
+      );
+    } on AuthException catch (error) {
+      errorMessage = error.message;
+    }
+    setState(() {});
   }
 
   @override
@@ -58,7 +81,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   shadows: [Shadow(blurRadius: 40, color: Colors.blue)],
                   text: 'Sign Up',
                   fontSize: 70),
-              SizedBox(height: size.height * 0.08),
+              Container(
+                height: size.height * 0.08,
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.all(size.height * 0.02),
+                child: Text(
+                  errorMessage,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
               CustomTextField(
                 controller: _emailController,
                 hintText: 'e-mail',

@@ -72,8 +72,9 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: size.height * 0.045),
               CustomButton(
                   onTap: () async {
-                    signInWithPassword(
-                        _emailController.text, _pwController.text);
+                    // signInWithPassword(
+                    //     _emailController.text, _pwController.text);
+                    await supabase.auth.signOut();
                   },
                   text: 'Login'),
               const SizedBox(height: 20),
