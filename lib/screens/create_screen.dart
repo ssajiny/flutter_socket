@@ -4,6 +4,7 @@ import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
+import 'package:flutter_socket/widgets/custom_dropdown.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:flutter_socket/widgets/custom_textfield.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +19,7 @@ class CreateScreen extends StatefulWidget {
 
 class _CreateScreenState extends State<CreateScreen> {
   final TextEditingController _nameController = TextEditingController();
+  String selectedValue = 'One';
 
   @override
   void initState() {
@@ -56,12 +58,22 @@ class _CreateScreenState extends State<CreateScreen> {
                   hintText: 'Create Name',
                   obscure: false,
                 ),
-                SizedBox(height: size.height * 0.045),
+                SizedBox(height: size.height * 0.04),
                 // Game Type
+                CustomDropDown(
+                  items: const ['One', 'Two'],
+                  initialValue: 'One',
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value;
+                    });
+                  },
+                ),
+                SizedBox(height: size.height * 0.04),
                 CustomButton(
                     onTap: () {
                       User? user = supabase.auth.currentUser;
-                      print('user: ${user!.id}');
+                      print('user: ${user!.id}, selectedValue: $selectedValue');
                     },
                     text: 'Create')
               ]),
