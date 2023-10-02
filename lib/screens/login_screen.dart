@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
+import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/sign_up_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
@@ -19,14 +20,22 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
+  String errorMessage = '';
 
-  Future<void> signInWithPassword(String email, String password) async {
-    final res = await supabase.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
-    final Session? session = res.session;
-    final User? user = res.user;
+  Future<String> signInWithPassword() async {
+    try {
+      await supabase.auth.signInWithPassword(
+        email: _emailController.text.trim(),
+        password: _pwController.text.trim(),
+      );
+      errorMessage = '';
+      setState(() {});
+      return errorMessage;
+    } on AuthException catch (error) {
+      errorMessage = error.message;
+      setState(() {});
+      return errorMessage;
+    }
   }
 
   @override
@@ -57,7 +66,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   shadows: [Shadow(blurRadius: 40, color: Colors.blue)],
                   text: 'Login',
                   fontSize: 70),
-              SizedBox(height: size.height * 0.08),
+              Container(
+                height: size.height * 0.08,
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.all(size.height * 0.02),
+                child: Text(
+                  errorMessage,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
               CustomTextField(
                 controller: _emailController,
                 hintText: 'e-mail',
@@ -72,9 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: size.height * 0.045),
               CustomButton(
                   onTap: () async {
-                    // signInWithPassword(
-                    //     _emailController.text, _pwController.text);
-                    await supabase.auth.signOut();
+                    await signInWithPassword();
+
+                    if (!mounted) return;
+                    if (errorMessage.isEmpty) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(MainMenuScreen.routeName);
+                    }
                   },
                   text: 'Login'),
               const SizedBox(height: 20),

@@ -4,6 +4,7 @@ import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
+import 'package:flutter_socket/widgets/custom_dialog.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:flutter_socket/widgets/custom_textfield.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -27,26 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email: _emailController.text.trim(),
         password: _pwController.text.trim(),
       );
-      if (!mounted) return;
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('All Set'),
-            content: const Text('Your account was successfully created.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.routeName);
-                },
-                child: const Text('Continue'),
-              ),
-            ],
-          );
-        },
-      );
+      errorMessage = '';
     } on AuthException catch (error) {
       errorMessage = error.message;
     }
@@ -103,8 +85,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: size.height * 0.045),
               CustomButton(
-                  onTap: () {
-                    signUp();
+                  onTap: () async {
+                    await signUp();
+                    if (!mounted) return;
+                    if (errorMessage.isEmpty) {
+                      CustomDialog(LoginScreen.routeName, 'All Set',
+                              'Your account was successfully created.')
+                          .showMyDialog(context);
+                    }
                   },
                   text: 'Submit'),
               const SizedBox(height: 20),
