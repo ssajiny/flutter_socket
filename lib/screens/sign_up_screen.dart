@@ -27,7 +27,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       await supabase.auth.signUp(
         email: _emailController.text.trim(),
         password: _pwController.text.trim(),
+        data: {'coin': 0, 'win': 0, 'lose': 0},
       );
+      await supabase.from('profiles').insert({
+        'id': supabase.auth.currentUser?.id,
+        'coin': 0,
+        'win': 0,
+        'lose': 0
+      });
       errorMessage = '';
     } on AuthException catch (error) {
       errorMessage = error.message;

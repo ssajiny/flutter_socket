@@ -90,7 +90,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       }
 
                       try {
-                        await supabase.from('active_room').insert({
+                        await supabase.from('active_rooms').insert({
                           'name': _nameController.text,
                           'game_type': selectedValue
                         });
