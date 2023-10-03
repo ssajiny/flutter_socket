@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
+import 'package:flutter_socket/screens/lobby_screen.dart';
 import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
@@ -20,6 +21,7 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   final TextEditingController _nameController = TextEditingController();
   String selectedValue = 'One';
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -53,6 +55,15 @@ class _CreateScreenState extends State<CreateScreen> {
                     text: 'Create Game',
                     fontSize: 70),
                 SizedBox(height: size.height * 0.08),
+                Container(
+                  height: size.height * 0.08,
+                  alignment: Alignment.bottomCenter,
+                  margin: EdgeInsets.all(size.height * 0.02),
+                  child: Text(
+                    errorMessage,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
                 CustomTextField(
                   controller: _nameController,
                   hintText: 'Create Name',
@@ -71,9 +82,28 @@ class _CreateScreenState extends State<CreateScreen> {
                 ),
                 SizedBox(height: size.height * 0.04),
                 CustomButton(
-                    onTap: () {
-                      User? user = supabase.auth.currentUser;
-                      print('user: ${user!.id}, selectedValue: $selectedValue');
+                    onTap: () async {
+                      if (_nameController.text.isEmpty) {
+                        errorMessage = "Please enter a name";
+                        setState(() {});
+                        return;
+                      }
+
+                      try {
+                        await supabase.from('active_room').insert({
+                          'name': _nameController.text,
+                          'game_type': selectedValue
+                        });
+                        if (!mounted) return;
+                        Navigator.of(context)
+                            .pushReplacementNamed(LobbyScreen.routeName);
+                      } on PostgrestException catch (_) {
+                        errorMessage =
+                            "Same name already exists or has already been created";
+                      } finally {
+                        _nameController.text = '';
+                        setState(() {});
+                      }
                     },
                     text: 'Create')
               ]),

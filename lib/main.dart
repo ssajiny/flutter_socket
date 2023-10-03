@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/screens/create_screen.dart';
 import 'package:flutter_socket/screens/join_screen.dart';
+import 'package:flutter_socket/screens/lobby_screen.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/sign_up_screen.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         CreateScreen.routeName: (context) => const CreateScreen(),
         JoinScreen.routeName: (context) => const JoinScreen(),
         SignUpScreen.routeName: (context) => const SignUpScreen(),
+        LobbyScreen.routeName: (context) => const LobbyScreen(),
       },
       initialRoute: SplashScreen.routeName,
     );
