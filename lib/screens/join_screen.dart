@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
+import 'package:flutter_socket/widgets/custom_table.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
-import 'package:flutter_socket/widgets/custom_textfield.dart';
 
 class JoinScreen extends StatefulWidget {
   static String routeName = '/join-room';
@@ -15,20 +16,18 @@ class JoinScreen extends StatefulWidget {
 }
 
 class _JoinScreenState extends State<JoinScreen> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _gameIdController = TextEditingController();
+  final list =
+      supabase.from('active_rooms').select<List<Map<String, dynamic>>>();
 
   @override
   void initState() {
-    super.initState();
     checkSession(context);
+    super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _nameController.dispose();
-    _gameIdController.dispose();
   }
 
   @override
@@ -51,16 +50,20 @@ class _JoinScreenState extends State<JoinScreen> {
                     text: 'Join',
                     fontSize: 70),
                 SizedBox(height: size.height * 0.08),
-                CustomTextField(
-                  controller: _nameController,
-                  hintText: 'Enter your nickname',
-                  obscure: false,
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  controller: _gameIdController,
-                  hintText: 'Enter Game ID',
-                  obscure: false,
+                FutureBuilder<List<Map<String, dynamic>>>(
+                  future: list,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return CustomTable(
+                        dataList: snapshot.data ?? [],
+                        onChanged: (_) {},
+                      );
+                    }
+                  },
                 ),
                 SizedBox(height: size.height * 0.045),
                 CustomButton(onTap: () {}, text: 'Join'),

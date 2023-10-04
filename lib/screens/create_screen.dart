@@ -23,9 +23,23 @@ class _CreateScreenState extends State<CreateScreen> {
   String selectedValue = 'One';
   String errorMessage = '';
 
+  Future<void> removeRoom() async {
+    await supabase
+        .from('active_rooms')
+        .delete()
+        .match({'host': supabase.auth.currentUser?.id});
+  }
+
+  Future<void> createRoom() async {
+    await supabase
+        .from('active_rooms')
+        .insert({'name': _nameController.text, 'game_type': selectedValue});
+  }
+
   @override
   void initState() {
     super.initState();
+    removeRoom();
     checkSession(context);
   }
 
@@ -70,7 +84,6 @@ class _CreateScreenState extends State<CreateScreen> {
                   obscure: false,
                 ),
                 SizedBox(height: size.height * 0.04),
-                // Game Type
                 CustomDropDown(
                   items: const ['One', 'Two'],
                   initialValue: 'One',
@@ -90,13 +103,16 @@ class _CreateScreenState extends State<CreateScreen> {
                       }
 
                       try {
-                        await supabase.from('active_rooms').insert({
-                          'name': _nameController.text,
-                          'game_type': selectedValue
-                        });
+                        createRoom();
                         if (!mounted) return;
-                        Navigator.of(context)
-                            .pushReplacementNamed(LobbyScreen.routeName);
+                        // Navigator.of(context).pushReplacementNamed(
+                        //     LobbyScreen.routeName,
+                        //     arguments: supabase.auth.currentUser!.id);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LobbyScreen(
+                                    host: supabase.auth.currentUser!.id)));
                       } on PostgrestException catch (_) {
                         errorMessage =
                             "Same name already exists or has already been created";

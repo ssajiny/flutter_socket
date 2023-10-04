@@ -37,7 +37,9 @@ class MyApp extends StatelessWidget {
         CreateScreen.routeName: (context) => const CreateScreen(),
         JoinScreen.routeName: (context) => const JoinScreen(),
         SignUpScreen.routeName: (context) => const SignUpScreen(),
-        LobbyScreen.routeName: (context) => const LobbyScreen(),
+        LobbyScreen.routeName: (context) => const LobbyScreen(
+              host: '',
+            ),
       },
       initialRoute: SplashScreen.routeName,
     );
