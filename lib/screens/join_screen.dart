@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
+import 'package:flutter_socket/screens/lobby_screen.dart';
 import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
@@ -18,7 +19,7 @@ class JoinScreen extends StatefulWidget {
 class _JoinScreenState extends State<JoinScreen> {
   final list =
       supabase.from('active_rooms').select<List<Map<String, dynamic>>>();
-  String selected = "";
+  List<dynamic> selected = [];
 
   @override
   void initState() {
@@ -74,7 +75,11 @@ class _JoinScreenState extends State<JoinScreen> {
                 SizedBox(height: size.height * 0.045),
                 CustomButton(
                     onTap: () {
-                      print(selected);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  LobbyScreen(host: selected[0]['host'])));
                     },
                     text: 'Join'),
               ]),

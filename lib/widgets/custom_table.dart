@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTable extends StatefulWidget {
   final List<dynamic> dataList;
-  final void Function(String) onChanged;
+  final void Function(List<dynamic>) onChanged;
 
   const CustomTable(
       {super.key, required this.dataList, required this.onChanged});
@@ -67,7 +67,7 @@ class _CustomTableState extends State<CustomTable> {
         .where((row) => row.selected)
         .map((row) => widget.dataList[dataRows.indexOf(row)])
         .toList();
-    widget.onChanged(selectedData.toString());
+    widget.onChanged(selectedData);
   }
 
   @override
