@@ -18,6 +18,7 @@ class JoinScreen extends StatefulWidget {
 class _JoinScreenState extends State<JoinScreen> {
   final list =
       supabase.from('active_rooms').select<List<Map<String, dynamic>>>();
+  String selected = "";
 
   @override
   void initState() {
@@ -58,15 +59,24 @@ class _JoinScreenState extends State<JoinScreen> {
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
-                      return CustomTable(
-                        dataList: snapshot.data ?? [],
-                        onChanged: (_) {},
+                      return SizedBox(
+                        height: 250,
+                        child: CustomTable(
+                          dataList: snapshot.data ?? [],
+                          onChanged: (selectedRow) {
+                            selected = selectedRow;
+                          },
+                        ),
                       );
                     }
                   },
                 ),
                 SizedBox(height: size.height * 0.045),
-                CustomButton(onTap: () {}, text: 'Join'),
+                CustomButton(
+                    onTap: () {
+                      print(selected);
+                    },
+                    text: 'Join'),
               ]),
         ),
       ),
