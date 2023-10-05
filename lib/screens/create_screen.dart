@@ -31,9 +31,11 @@ class _CreateScreenState extends State<CreateScreen> {
   }
 
   Future<void> createRoom() async {
-    await supabase
-        .from('active_rooms')
-        .insert({'name': _nameController.text, 'game_type': selectedValue});
+    await supabase.from('active_rooms').insert({
+      'name': _nameController.text,
+      'game_type': selectedValue,
+      'host': supabase.auth.currentUser!.id,
+    });
   }
 
   @override
@@ -112,7 +114,9 @@ class _CreateScreenState extends State<CreateScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => LobbyScreen(
-                                    host: supabase.auth.currentUser!.id)));
+                                      host: supabase.auth.currentUser!.id,
+                                      imGuest: false,
+                                    )));
                       } on PostgrestException catch (_) {
                         errorMessage =
                             "Same name already exists or has already been created";

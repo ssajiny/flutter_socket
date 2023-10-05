@@ -17,8 +17,9 @@ class JoinScreen extends StatefulWidget {
 }
 
 class _JoinScreenState extends State<JoinScreen> {
-  final list =
-      supabase.from('active_rooms').select<List<Map<String, dynamic>>>();
+  final list = supabase
+      .from('active_rooms')
+      .select<List<Map<String, dynamic>>>('*, profiles(nickname)');
   List<dynamic> selected = [];
 
   @override
@@ -45,7 +46,7 @@ class _JoinScreenState extends State<JoinScreen> {
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const CustomText(
                     shadows: [Shadow(blurRadius: 40, color: Colors.blue)],
@@ -75,11 +76,13 @@ class _JoinScreenState extends State<JoinScreen> {
                 SizedBox(height: size.height * 0.045),
                 CustomButton(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  LobbyScreen(host: selected[0]['host'])));
+                      if (selected.isNotEmpty) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    LobbyScreen(host: selected[0]['host'])));
+                      }
                     },
                     text: 'Join'),
               ]),

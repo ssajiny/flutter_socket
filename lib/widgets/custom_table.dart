@@ -14,12 +14,11 @@ class CustomTable extends StatefulWidget {
 class _CustomTableState extends State<CustomTable> {
   List<DataRow> dataRows = [];
 
-  @override
-  void initState() {
-    super.initState();
+  void setDataRow() {
     dataRows = widget.dataList.asMap().entries.map((entry) {
       final index = entry.key;
       bool selected = false;
+      var nickname = entry.value['profiles']['nickname'];
 
       return DataRow(
         selected: selected,
@@ -32,10 +31,16 @@ class _CustomTableState extends State<CustomTable> {
         cells: [
           DataCell(Text(entry.value['name'])),
           DataCell(Text(entry.value['game_type'])),
-          DataCell(Text(entry.value['host'])),
+          DataCell(Text(nickname)),
         ],
       );
     }).toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setDataRow();
   }
 
   void updateSelectedRows(selectedIndex) {

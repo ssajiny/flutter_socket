@@ -3,6 +3,7 @@ import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
+import 'package:flutter_socket/utils/random_string.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_dialog.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
@@ -33,7 +34,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'id': supabase.auth.currentUser?.id,
         'coin': 0,
         'win': 0,
-        'lose': 0
+        'lose': 0,
+        'nickname': generateRandomString(10)
       });
       errorMessage = '';
     } on AuthException catch (error) {
