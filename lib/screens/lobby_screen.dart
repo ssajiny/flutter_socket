@@ -56,7 +56,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
             guest = "";
           }
         }
-        print('I am Guest? ${widget.imGuest}');
+        print('Am I Guest? ${widget.imGuest}');
       });
     }).on(RealtimeListenTypes.broadcast, ChannelFilter(event: "game_start"),
         (payload, [_]) {
@@ -153,7 +153,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
                           type: RealtimeListenTypes.broadcast,
                           event: 'game_start',
                           payload: {'test': 'test'});
-                      leaveRoom();
                     },
                     text: 'Start'),
                 SizedBox(height: size.height * 0.04),
