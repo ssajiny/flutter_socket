@@ -1,7 +1,10 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
+import 'package:flutter_socket/screens/ace_skies.dart';
 import 'package:flutter_socket/screens/first_screen.dart';
+import 'package:flutter_socket/screens/game_page.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -37,12 +40,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
       guestNickname = "";
     }
   }
-
-  // Future<void> removeGuestDB() async {
-  //   await supabase
-  //       .from('active_rooms')
-  //       .update({'player': null}).match({'host': widget.host});
-  // }
 
   Future<void> getRoomInfo() async {
     var hostData = await supabase
@@ -84,7 +81,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const FirstScreen();
+            return const GamePage();
           },
         ),
         (route) => false,
