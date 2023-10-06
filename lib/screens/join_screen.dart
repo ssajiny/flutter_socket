@@ -75,8 +75,13 @@ class _JoinScreenState extends State<JoinScreen> {
                 ),
                 SizedBox(height: size.height * 0.045),
                 CustomButton(
-                    onTap: () {
+                    onTap: () async {
                       if (selected.isNotEmpty) {
+                        await supabase.from('active_rooms').update({
+                          'player': supabase.auth.currentUser!.id
+                        }).match({'host': selected[0]['host']});
+
+                        if (!mounted) return;
                         Navigator.push(
                             context,
                             MaterialPageRoute(

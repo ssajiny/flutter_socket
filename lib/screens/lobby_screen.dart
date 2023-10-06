@@ -24,22 +24,42 @@ class _LobbyScreenState extends State<LobbyScreen> {
   var players = [];
   var hostNickname = "empty";
   var guest = "";
-  var guestNickname = '';
+  var guestNickname = "";
+
+  Future<void> getGuestNickName() async {
+    if (widget.imGuest) {
+      var guestData = await supabase
+          .from('profiles')
+          .select('nickname')
+          .eq('id', supabase.auth.currentUser!.id);
+      guestNickname = guestData![0]['nickname'];
+    } else {
+      guestNickname = "";
+    }
+  }
+
+  // Future<void> removeGuestDB() async {
+  //   await supabase
+  //       .from('active_rooms')
+  //       .update({'player': null}).match({'host': widget.host});
+  // }
 
   Future<void> getRoomInfo() async {
-    var data = await supabase
+    var hostData = await supabase
         .from('active_rooms')
         .select('*, profiles(nickname)')
         .eq('host', widget.host);
-    roomName = data![0]['name'];
-    gameType = data![0]['game_type'];
-    hostNickname = data![0]['profiles']['nickname'];
+
+    roomName = hostData![0]['name'];
+    gameType = hostData![0]['game_type'];
+    hostNickname = hostData![0]['profiles']['nickname'];
 
     _lobbyChannel = supabase.channel(widget.host,
         opts: const RealtimeChannelConfig(self: true));
     _lobbyChannel.on(RealtimeListenTypes.presence, ChannelFilter(event: 'sync'),
         (payload, [ref]) {
       final presenceState = _lobbyChannel.presenceState();
+      getGuestNickName();
       setState(() {
         players = presenceState.values
             .map((presences) =>
@@ -48,9 +68,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
         print('CurrentUsers: $players');
 
-        for (String tmp in players) {
-          if (tmp != widget.host) {
-            guest = tmp;
+        for (String player in players) {
+          if (widget.host != player) {
+            guest = player;
             break;
           } else {
             guest = "";
@@ -60,7 +80,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
       });
     }).on(RealtimeListenTypes.broadcast, ChannelFilter(event: "game_start"),
         (payload, [_]) {
-      print('broadcast');
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -78,10 +97,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   Future<void> leaveRoom() async {
-    await supabase
-        .from('active_rooms')
-        .delete()
-        .match({'host': supabase.auth.currentUser?.id});
+    if (widget.imGuest) {
+      await supabase
+          .from('active_rooms')
+          .update({'player': null}).match({'host': widget.host});
+    } else {
+      await supabase.from('active_rooms').delete().match({'host': widget.host});
+    }
     supabase.removeChannel(_lobbyChannel);
   }
 
@@ -93,7 +115,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   @override
   void dispose() {
-    supabase.removeChannel(_lobbyChannel);
+    leaveRoom();
     super.dispose();
   }
 
@@ -143,7 +165,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                     const Spacer(),
                     CustomText(shadows: const [
                       Shadow(blurRadius: 40, color: Colors.blue)
-                    ], text: guest, fontSize: 20),
+                    ], text: guestNickname, fontSize: 20),
                   ],
                 ),
                 SizedBox(height: size.height * 0.08),
