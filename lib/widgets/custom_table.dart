@@ -19,6 +19,7 @@ class _CustomTableState extends State<CustomTable> {
       final index = entry.key;
       bool selected = false;
       var nickname = entry.value['profiles']['nickname'];
+      var status = entry.value['player'].toString();
 
       return DataRow(
         selected: selected,
@@ -32,6 +33,11 @@ class _CustomTableState extends State<CustomTable> {
           DataCell(Text(entry.value['name'])),
           DataCell(Text(entry.value['game_type'])),
           DataCell(Text(nickname)),
+          DataCell(Text(
+            status == "null" ? "" : "Full",
+            style:
+                const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          )),
         ],
       );
     }).toList();
@@ -85,6 +91,7 @@ class _CustomTableState extends State<CustomTable> {
           DataColumn(label: Text('Name')),
           DataColumn(label: Text('Type')),
           DataColumn(label: Text('Host')),
+          DataColumn(label: Text('Status')),
         ],
         rows: dataRows,
       ),

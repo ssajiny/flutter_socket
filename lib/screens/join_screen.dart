@@ -17,14 +17,27 @@ class JoinScreen extends StatefulWidget {
 }
 
 class _JoinScreenState extends State<JoinScreen> {
-  final list = supabase
-      .from('active_rooms')
-      .select<List<Map<String, dynamic>>>('*, profiles(nickname)');
+  late final list;
   List<dynamic> selected = [];
+
+  Future<void> getRoomInfo() async {
+    list = supabase
+        .from('active_rooms')
+        .select<List<Map<String, dynamic>>>('*, profiles(nickname)');
+  }
+
+  Future<bool> checkStatus() async {
+    var status = await supabase
+        .from('active_rooms')
+        .select('player')
+        .eq('host', selected[0]['host']);
+    return status[0]['player'].toString() == "null";
+  }
 
   @override
   void initState() {
     checkSession(context);
+    getRoomInfo();
     super.initState();
   }
 
@@ -76,7 +89,7 @@ class _JoinScreenState extends State<JoinScreen> {
                 SizedBox(height: size.height * 0.045),
                 CustomButton(
                     onTap: () async {
-                      if (selected.isNotEmpty) {
+                      if (selected.isNotEmpty && await checkStatus()) {
                         await supabase.from('active_rooms').update({
                           'player': supabase.auth.currentUser!.id
                         }).match({'host': selected[0]['host']});
