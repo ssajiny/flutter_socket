@@ -103,20 +103,18 @@ class _CreateScreenState extends State<CreateScreen> {
                         setState(() {});
                         return;
                       }
-
                       try {
                         createRoom();
-                        if (!mounted) return;
-                        // Navigator.of(context).pushReplacementNamed(
-                        //     LobbyScreen.routeName,
-                        //     arguments: supabase.auth.currentUser!.id);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LobbyScreen(
-                                      host: supabase.auth.currentUser!.id,
-                                      imGuest: false,
-                                    )));
+
+                        Future.delayed(Duration.zero, () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LobbyScreen(
+                                        host: supabase.auth.currentUser!.id,
+                                        imGuest: false,
+                                      )));
+                        });
                       } on PostgrestException catch (_) {
                         errorMessage =
                             "Same name already exists or has already been created";

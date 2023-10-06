@@ -14,7 +14,7 @@ class LobbyScreen extends StatefulWidget {
   final String host;
   final bool imGuest;
 
-  const LobbyScreen({required this.host, super.key, this.imGuest = true});
+  const LobbyScreen({this.host = '', super.key, this.imGuest = true});
 
   @override
   State<LobbyScreen> createState() => _LobbyScreenState();

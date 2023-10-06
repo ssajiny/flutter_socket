@@ -90,12 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomButton(
                   onTap: () async {
                     await signInWithPassword();
-
-                    if (!mounted) return;
-                    if (errorMessage.isEmpty) {
+                    // if (!mounted) return;
+                    Future.delayed(Duration.zero, () {
                       Navigator.of(context)
                           .pushReplacementNamed(MainMenuScreen.routeName);
-                    }
+                    });
                   },
                   text: 'Login'),
               const SizedBox(height: 20),
@@ -110,8 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(backgroundColor: bgCololor),
                     child: const Text('Sign Up'),
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(SignUpScreen.routeName);
+                      Future.delayed(Duration.zero, () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(SignUpScreen.routeName);
+                      });
                     },
                   )
                 ],

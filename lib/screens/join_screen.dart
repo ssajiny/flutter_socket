@@ -94,12 +94,13 @@ class _JoinScreenState extends State<JoinScreen> {
                           'player': supabase.auth.currentUser!.id
                         }).match({'host': selected[0]['host']});
 
-                        if (!mounted) return;
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    LobbyScreen(host: selected[0]['host'])));
+                        Future.delayed(Duration.zero, () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      LobbyScreen(host: selected[0]['host'])));
+                        });
                       }
                     },
                     text: 'Join'),
