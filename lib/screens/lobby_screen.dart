@@ -1,9 +1,6 @@
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
-import 'package:flutter_socket/screens/ace_skies.dart';
-import 'package:flutter_socket/screens/first_screen.dart';
 import 'package:flutter_socket/screens/game_page.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
@@ -81,7 +78,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const GamePage();
+            return GamePage(
+              host: widget.host,
+            );
           },
         ),
         (route) => false,

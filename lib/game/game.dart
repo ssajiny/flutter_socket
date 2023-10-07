@@ -1,25 +1,29 @@
-import 'package:flame/components.dart';
+import 'dart:async';
+
 import 'package:flame/game.dart';
-import 'package:flame/input.dart';
+import 'package:flame/components.dart';
+import 'package:flame/events.dart';
+import 'package:flame/image_composition.dart' as flame_image;
 import 'package:flutter_socket/game/bullet.dart';
 import 'package:flutter_socket/game/player.dart';
-import 'package:flutter_socket/utils/joystick_player.dart';
-import 'package:flame/image_composition.dart' as flame_image;
+import 'package:flutter/material.dart';
 
-class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
-  late final JoystickPlayer player;
-  late final JoystickComponent joystick;
-
-  AceSkies({
+class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
+  MyGame({
     required this.onGameOver,
     required this.onGameStateUpdate,
   });
 
   static const _initialHealthPoints = 100;
 
+  /// Callback to notify the parent when the game ends.
   final void Function(bool didWin) onGameOver;
 
-  final void Function(Vector2 position, int health) onGameStateUpdate;
+  /// Callback for when the game state updates.
+  final void Function(
+    Vector2 position,
+    int health,
+  ) onGameStateUpdate;
 
   /// `Player` instance of the player
   late Player _player;
@@ -35,7 +39,12 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
   late final flame_image.Image _opponentBulletImage;
 
   @override
-  Future<void> onLoad() async {
+  Color backgroundColor() {
+    return Colors.transparent;
+  }
+
+  @override
+  Future<void>? onLoad() async {
     final playerImage = await images.load('player.png');
     _player = Player(isMe: true);
     final spriteSize = Vector2.all(Player.radius * 2);
@@ -61,21 +70,6 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
     super.onPanUpdate(info);
   }
 
-  void startNewGame() {
-    isGameOver = false;
-    _playerHealthPoint = _initialHealthPoints;
-
-    for (final child in children) {
-      if (child is Player) {
-        child.position = child.initialPosition;
-      } else if (child is Bullet) {
-        child.removeFromParent();
-      }
-    }
-
-    _shootBullets();
-  }
-
   @override
   void update(double dt) {
     super.update(dt);
@@ -95,6 +89,24 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
     }
   }
 
+  void startNewGame() {
+    isGameOver = false;
+    _playerHealthPoint = _initialHealthPoints;
+
+    for (final child in children) {
+      if (child is Player) {
+        child.position = child.initialPosition;
+      } else if (child is Bullet) {
+        child.removeFromParent();
+      }
+    }
+
+    _shootBullets();
+  }
+
+  /// shoots out bullets form both the player and the opponent.
+  ///
+  /// Calls itself every 500 milliseconds
   Future<void> _shootBullets() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
@@ -145,9 +157,4 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
     isGameOver = true;
     onGameOver(playerWon);
   }
-
-  // @override
-  // void render(Canvas canvas) {
-  //   super.render(canvas);
-  // }
 }

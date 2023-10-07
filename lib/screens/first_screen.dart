@@ -34,7 +34,6 @@ class _FirstScreenState extends State<FirstScreen> {
         await _gameChannel.track({'player': supabase.auth.currentUser?.id});
       }
     });
-    ;
   }
 
   @override

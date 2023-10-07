@@ -3,6 +3,7 @@ import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/screens/create_screen.dart';
 import 'package:flutter_socket/screens/join_screen.dart';
+import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 
@@ -34,9 +35,16 @@ class MainMenuScreen extends StatelessWidget {
               height: 30,
             ),
             CustomButton(onTap: () => joinRoom(context), text: 'Join'),
+            const SizedBox(
+              height: 30,
+            ),
             CustomButton(
                 onTap: () async {
                   await supabase.auth.signOut();
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(LoginScreen.routeName);
+                  });
                 },
                 text: 'Log out'),
           ]),

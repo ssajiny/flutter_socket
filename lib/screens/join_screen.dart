@@ -59,7 +59,7 @@ class _JoinScreenState extends State<JoinScreen> {
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const CustomText(
                     shadows: [Shadow(blurRadius: 40, color: Colors.blue)],

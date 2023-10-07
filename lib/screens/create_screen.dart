@@ -68,11 +68,11 @@ class _CreateScreenState extends State<CreateScreen> {
               children: [
                 const CustomText(
                     shadows: [Shadow(blurRadius: 40, color: Colors.blue)],
-                    text: 'Create Game',
+                    text: 'Create',
                     fontSize: 70),
-                SizedBox(height: size.height * 0.08),
+                SizedBox(height: size.height * 0.04),
                 Container(
-                  height: size.height * 0.08,
+                  height: size.height * 0.04,
                   alignment: Alignment.bottomCenter,
                   margin: EdgeInsets.all(size.height * 0.02),
                   child: Text(
