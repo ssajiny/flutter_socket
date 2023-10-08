@@ -7,6 +7,7 @@ import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:flutter_socket/widgets/custom_textfield.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -91,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () async {
                     await signInWithPassword();
                     if (!mounted) return;
-                    Navigator.of(context).pushNamed(MainMenuScreen.routeName);
+                    Get.offNamed(MainMenuScreen.routeName);
                   },
                   text: 'Login'),
               const SizedBox(height: 20),
@@ -106,8 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(backgroundColor: bgCololor),
                     child: const Text('Sign Up'),
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(SignUpScreen.routeName);
+                      Get.toNamed(SignUpScreen.routeName);
                     },
                   )
                 ],

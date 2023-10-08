@@ -4,14 +4,12 @@ import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/screens/game_page.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LobbyScreen extends StatefulWidget {
   static String routeName = '/lobby';
-  final String host;
-  final bool imGuest;
-
-  const LobbyScreen({this.host = '', super.key, this.imGuest = true});
+  const LobbyScreen({super.key});
 
   @override
   State<LobbyScreen> createState() => _LobbyScreenState();
@@ -21,13 +19,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
   late final RealtimeChannel _lobbyChannel;
   var roomName = "Loading ...";
   var gameType = "Loading ...";
+  var host = Get.arguments['host'];
   var players = [];
   var hostNickname = "empty";
   var guest = "";
   var guestNickname = "";
+  var imGuest = Get.arguments['imGuest'];
 
   Future<void> getGuestNickName() async {
-    if (widget.imGuest) {
+    if (imGuest) {
       var guestData = await supabase
           .from('profiles')
           .select('nickname')
@@ -42,14 +42,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
     var hostData = await supabase
         .from('active_rooms')
         .select('*, profiles(nickname)')
-        .eq('host', widget.host);
+        .eq('host', host);
 
     roomName = hostData![0]['name'];
     gameType = hostData![0]['game_type'];
     hostNickname = hostData![0]['profiles']['nickname'];
 
-    _lobbyChannel = supabase.channel(widget.host,
-        opts: const RealtimeChannelConfig(self: true));
+    _lobbyChannel =
+        supabase.channel(host, opts: const RealtimeChannelConfig(self: true));
     _lobbyChannel.on(RealtimeListenTypes.presence, ChannelFilter(event: 'sync'),
         (payload, [ref]) {
       final presenceState = _lobbyChannel.presenceState();
@@ -63,14 +63,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
         print('CurrentUsers: $players');
 
         for (String player in players) {
-          if (widget.host != player) {
+          if (host != player) {
             guest = player;
             break;
           } else {
             guest = "";
           }
         }
-        print('Am I Guest? ${widget.imGuest}');
       });
     }).on(RealtimeListenTypes.broadcast, ChannelFilter(event: "game_start"),
         (payload, [_]) {
@@ -79,7 +78,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
         MaterialPageRoute(
           builder: (context) {
             return GamePage(
-              host: widget.host,
+              host: host,
             );
           },
         ),
@@ -93,18 +92,19 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   Future<void> leaveRoom() async {
-    if (widget.imGuest) {
+    if (imGuest) {
       await supabase
           .from('active_rooms')
-          .update({'player': null}).match({'host': widget.host});
+          .update({'player': null}).match({'host': host});
     } else {
-      await supabase.from('active_rooms').delete().match({'host': widget.host});
+      await supabase.from('active_rooms').delete().match({'host': host});
     }
     supabase.removeChannel(_lobbyChannel);
   }
 
   @override
   void initState() {
+    print('@@@@@@@@@@@@@@@@@@@: ${Get.arguments}');
     getRoomInfo();
     super.initState();
   }
@@ -177,8 +177,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                 CustomButton(
                     onTap: () async {
                       leaveRoom();
-                      if (!mounted) return;
-                      Navigator.of(context).pop();
+                      Get.back();
                     },
                     text: 'Exit'),
               ]),

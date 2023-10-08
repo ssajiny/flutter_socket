@@ -6,17 +6,18 @@ import 'package:flutter_socket/screens/join_screen.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
+import 'package:get/get.dart';
 
 class MainMenuScreen extends StatelessWidget {
   static String routeName = '/main-menu';
   const MainMenuScreen({super.key});
 
   void createRoom(BuildContext context) {
-    Navigator.pushNamed(context, CreateScreen.routeName);
+    Get.toNamed(CreateScreen.routeName);
   }
 
   void joinRoom(BuildContext context) {
-    Navigator.pushNamed(context, JoinScreen.routeName);
+    Get.toNamed(JoinScreen.routeName);
   }
 
   @override
@@ -41,10 +42,7 @@ class MainMenuScreen extends StatelessWidget {
             CustomButton(
                 onTap: () async {
                   await supabase.auth.signOut();
-                  Future.delayed(Duration.zero, () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(LoginScreen.routeName);
-                  });
+                  Get.offAllNamed(LoginScreen.routeName);
                 },
                 text: 'Log out'),
           ]),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
 import 'package:flutter_socket/screens/main_menu.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   static String routeName = '/';
@@ -24,9 +25,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
     if (session != null) {
-      Navigator.of(context).pushReplacementNamed(MainMenuScreen.routeName);
+      Get.offNamed(MainMenuScreen.routeName);
     } else {
-      Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+      Get.offNamed(LoginScreen.routeName);
     }
   }
 

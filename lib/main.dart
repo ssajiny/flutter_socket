@@ -8,6 +8,7 @@ import 'package:flutter_socket/screens/sign_up_screen.dart';
 import 'package:flutter_socket/screens/splash_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/credential/supabase.dart' as credential;
+import 'package:get/get.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -27,18 +28,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return GetMaterialApp(
+      title: 'SJH Socket',
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: bgCololor),
-      routes: {
-        SplashScreen.routeName: (context) => const SplashScreen(),
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        MainMenuScreen.routeName: (context) => const MainMenuScreen(),
-        CreateScreen.routeName: (context) => const CreateScreen(),
-        JoinScreen.routeName: (context) => const JoinScreen(),
-        SignUpScreen.routeName: (context) => const SignUpScreen(),
-        LobbyScreen.routeName: (context) => const LobbyScreen(),
-      },
+      getPages: [
+        GetPage(name: SplashScreen.routeName, page: () => const SplashScreen()),
+        GetPage(name: LoginScreen.routeName, page: () => const LoginScreen()),
+        GetPage(
+            name: MainMenuScreen.routeName, page: () => const MainMenuScreen()),
+        GetPage(name: CreateScreen.routeName, page: () => const CreateScreen()),
+        GetPage(name: JoinScreen.routeName, page: () => const JoinScreen()),
+        GetPage(name: SignUpScreen.routeName, page: () => const SignUpScreen()),
+        GetPage(name: LobbyScreen.routeName, page: () => const LobbyScreen()),
+      ],
       initialRoute: SplashScreen.routeName,
     );
   }

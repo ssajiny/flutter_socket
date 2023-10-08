@@ -7,6 +7,7 @@ import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_table.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
+import 'package:get/get.dart';
 
 class JoinScreen extends StatefulWidget {
   static String routeName = '/join-room';
@@ -93,13 +94,9 @@ class _JoinScreenState extends State<JoinScreen> {
                         await supabase.from('active_rooms').update({
                           'player': supabase.auth.currentUser!.id
                         }).match({'host': selected[0]['host']});
-
-                        Future.delayed(Duration.zero, () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      LobbyScreen(host: selected[0]['host'])));
+                        Get.offNamed(LobbyScreen.routeName, arguments: {
+                          'host': selected[0]['host'],
+                          'imGuest': true
                         });
                       }
                     },

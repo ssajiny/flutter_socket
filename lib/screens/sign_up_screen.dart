@@ -8,6 +8,7 @@ import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_dialog.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:flutter_socket/widgets/custom_textfield.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       await supabase.from('profiles').insert({
         'id': supabase.auth.currentUser?.id,
-        'coin': 0,
+        'coin': 30,
         'win': 0,
         'lose': 0,
         'nickname': generateRandomString(10)
@@ -116,8 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     style: ElevatedButton.styleFrom(backgroundColor: bgCololor),
                     child: const Text('Log in'),
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(LoginScreen.routeName);
+                      Get.toNamed(LoginScreen.routeName);
                     },
                   )
                 ],

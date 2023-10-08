@@ -8,6 +8,7 @@ import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_dropdown.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:flutter_socket/widgets/custom_textfield.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreateScreen extends StatefulWidget {
@@ -105,15 +106,9 @@ class _CreateScreenState extends State<CreateScreen> {
                       }
                       try {
                         createRoom();
-
-                        Future.delayed(Duration.zero, () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LobbyScreen(
-                                        host: supabase.auth.currentUser!.id,
-                                        imGuest: false,
-                                      )));
+                        Get.offNamed(LobbyScreen.routeName, arguments: {
+                          'host': supabase.auth.currentUser!.id,
+                          'imGuest': false,
                         });
                       } on PostgrestException catch (_) {
                         errorMessage =
