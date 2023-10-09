@@ -37,7 +37,7 @@ class _JoinScreenState extends State<JoinScreen> {
 
   @override
   void initState() {
-    checkSession(context);
+    // checkSession(context);
     getRoomInfo();
     super.initState();
   }

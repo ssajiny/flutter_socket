@@ -20,14 +20,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _redirect() async {
-    await Future.delayed(Duration.zero);
+    // await Future.delayed(Duration.zero);
     final session = supabase.auth.currentSession;
 
-    if (!mounted) return;
     if (session != null) {
-      Get.offNamed(MainMenuScreen.routeName);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offNamed(MainMenuScreen.routeName);
+      });
     } else {
-      Get.offNamed(LoginScreen.routeName);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offNamed(LoginScreen.routeName);
+      });
     }
   }
 

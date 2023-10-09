@@ -43,7 +43,7 @@ class _CreateScreenState extends State<CreateScreen> {
   void initState() {
     super.initState();
     removeRoom();
-    checkSession(context);
+    // checkSession(context);
   }
 
   @override

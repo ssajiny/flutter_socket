@@ -21,21 +21,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
-  String errorMessage = '';
 
-  Future<String> signInWithPassword() async {
+  void signInWithPassword() async {
     try {
       await supabase.auth.signInWithPassword(
         email: _emailController.text.trim(),
         password: _pwController.text.trim(),
       );
-      errorMessage = '';
-      setState(() {});
-      return errorMessage;
     } on AuthException catch (error) {
-      errorMessage = error.message;
-      setState(() {});
-      return errorMessage;
+      print('Login error: $error');
     }
   }
 
@@ -67,15 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   shadows: [Shadow(blurRadius: 40, color: Colors.blue)],
                   text: 'Login',
                   fontSize: 70),
-              Container(
-                height: size.height * 0.08,
-                alignment: Alignment.bottomCenter,
-                margin: EdgeInsets.all(size.height * 0.02),
-                child: Text(
-                  errorMessage,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
               CustomTextField(
                 controller: _emailController,
                 hintText: 'e-mail',
@@ -90,8 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: size.height * 0.045),
               CustomButton(
                   onTap: () async {
-                    await signInWithPassword();
-                    if (!mounted) return;
+                    signInWithPassword();
                     Get.offNamed(MainMenuScreen.routeName);
                   },
                   text: 'Login'),

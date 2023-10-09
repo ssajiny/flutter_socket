@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/create_screen.dart';
 import 'package:flutter_socket/screens/join_screen.dart';
 import 'package:flutter_socket/screens/lobby_screen.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
-import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/sign_up_screen.dart';
-import 'package:flutter_socket/screens/splash_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
+import 'package:flutter_socket/screens/splash_screen.dart';
 import 'package:flutter_socket/credential/supabase.dart' as credential;
 import 'package:get/get.dart';
 
@@ -34,14 +34,14 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: SplashScreen.routeName, page: () => const SplashScreen()),
         GetPage(name: LoginScreen.routeName, page: () => const LoginScreen()),
+        GetPage(name: SignUpScreen.routeName, page: () => const SignUpScreen()),
         GetPage(
             name: MainMenuScreen.routeName, page: () => const MainMenuScreen()),
         GetPage(name: CreateScreen.routeName, page: () => const CreateScreen()),
         GetPage(name: JoinScreen.routeName, page: () => const JoinScreen()),
-        GetPage(name: SignUpScreen.routeName, page: () => const SignUpScreen()),
         GetPage(name: LobbyScreen.routeName, page: () => const LobbyScreen()),
       ],
-      initialRoute: SplashScreen.routeName,
+      home: const SplashScreen(),
     );
   }
 }
