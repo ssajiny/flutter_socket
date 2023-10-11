@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_socket/screens/game_page.dart';
+import 'package:flutter_socket/screens/game_screen.dart';
 import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/create_screen.dart';
 import 'package:flutter_socket/screens/join_screen.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: CreateScreen.routeName, page: () => const CreateScreen()),
         GetPage(name: JoinScreen.routeName, page: () => const JoinScreen()),
         GetPage(name: LobbyScreen.routeName, page: () => const LobbyScreen()),
-        GetPage(name: GamePage.routeName, page: () => const GamePage()),
+        GetPage(name: GameScreen.routeName, page: () => const GameScreen()),
       ],
       home: const SplashScreen(),
     );

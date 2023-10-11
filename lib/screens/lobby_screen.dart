@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
-import 'package:flutter_socket/screens/game_page.dart';
+import 'package:flutter_socket/screens/game_screen.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_text.dart';
 import 'package:get/get.dart';
@@ -84,7 +84,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       //   ),
       //   (route) => false,
       // );
-      Get.offNamed(GamePage.routeName, arguments: {'host': host});
+      Get.offNamed(GameScreen.routeName, arguments: {'host': host});
     }).subscribe((status, [ref]) async {
       if (status == 'SUBSCRIBED') {
         await _lobbyChannel.track({'player': supabase.auth.currentUser?.id});

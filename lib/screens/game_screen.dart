@@ -1,20 +1,20 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
-import 'package:flutter_socket/screens/ace_skies.dart';
+import 'package:flutter_socket/aceSkies/ace_skies.dart';
 import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class GamePage extends StatefulWidget {
-  static String routeName = '/game-page';
-  const GamePage({super.key});
+class GameScreen extends StatefulWidget {
+  static String routeName = '/game-screen';
+  const GameScreen({super.key});
 
   @override
-  State<GamePage> createState() => _GamePageState();
+  State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _GameScreenState extends State<GameScreen> {
   late final AceSkies _aceSkies;
   var host = Get.arguments['host'];
   RealtimeChannel? _gameChannel;
