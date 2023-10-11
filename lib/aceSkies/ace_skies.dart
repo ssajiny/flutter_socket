@@ -94,11 +94,7 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
     // Player's bullet
     final playerBulletInitialPosition = Vector2.copy(_player.position)
       ..y -= Player.radius;
-    final playerBulletVelocities = [
-      Vector2(0, -100),
-      Vector2(60, -80),
-      Vector2(-60, -80),
-    ];
+    final playerBulletVelocities = [Vector2(0, -100)];
     for (final bulletVelocity in playerBulletVelocities) {
       add((Bullet(
         isMine: true,
@@ -110,11 +106,7 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
     // Opponent's bullet
     final opponentBulletInitialPosition = Vector2.copy(_opponent.position)
       ..y += Player.radius;
-    final opponentBulletVelocities = [
-      Vector2(0, 100),
-      Vector2(60, 80),
-      Vector2(-60, 80),
-    ];
+    final opponentBulletVelocities = [Vector2(0, 100)];
     for (final bulletVelocity in opponentBulletVelocities) {
       add((Bullet(
         isMine: false,
