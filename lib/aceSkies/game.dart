@@ -4,8 +4,8 @@ import 'package:flame/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/image_composition.dart' as flame_image;
-import 'package:flutter_socket/game/bullet.dart';
-import 'package:flutter_socket/game/player.dart';
+import 'package:flutter_socket/aceSkies/bullet.dart';
+import 'package:flutter_socket/aceSkies/player.dart';
 import 'package:flutter/material.dart';
 
 class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
@@ -16,19 +16,19 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   static const _initialHealthPoints = 100;
 
-  /// Callback to notify the parent when the game ends.
+  // Callback to notify the parent when the game ends.
   final void Function(bool didWin) onGameOver;
 
-  /// Callback for when the game state updates.
+  // Callback for when the game state updates.
   final void Function(
     Vector2 position,
     int health,
   ) onGameStateUpdate;
 
-  /// `Player` instance of the player
+  // `Player` instance of the player
   late Player _player;
 
-  /// `Player` instance of the opponent
+  // `Player` instance of the opponent
   late Player _opponent;
 
   bool isGameOver = true;
@@ -104,11 +104,10 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
     _shootBullets();
   }
 
-  /// shoots out bullets form both the player and the opponent.
-  ///
-  /// Calls itself every 500 milliseconds
+  // shoots out bullets form both the player and the opponent.
+  // Calls itself every 500 milliseconds
   Future<void> _shootBullets() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 1000));
 
     /// Player's bullet
     final playerBulletInitialPosition = Vector2.copy(_player.position)
@@ -122,7 +121,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       add((Bullet(
         isMine: true,
         velocity: bulletVelocity,
-        image: _playerBulletImage,
+        // image: _playerBulletImage,
         initialPosition: playerBulletInitialPosition,
       )));
     }
@@ -139,7 +138,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       add((Bullet(
         isMine: false,
         velocity: bulletVelocity,
-        image: _opponentBulletImage,
+        // image: _opponentBulletImage,
         initialPosition: opponentBulletInitialPosition,
       )));
     }
@@ -152,7 +151,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
     _opponent.updateHealth(health / _initialHealthPoints);
   }
 
-  /// Called when either the player or the opponent has run out of health points
+  // Called when either the player or the opponent has run out of health points
   void endGame(bool playerWon) {
     isGameOver = true;
     onGameOver(playerWon);

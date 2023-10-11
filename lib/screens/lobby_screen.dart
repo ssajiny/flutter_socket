@@ -73,17 +73,18 @@ class _LobbyScreenState extends State<LobbyScreen> {
       });
     }).on(RealtimeListenTypes.broadcast, ChannelFilter(event: "game_start"),
         (payload, [_]) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return GamePage(
-              host: host,
-            );
-          },
-        ),
-        (route) => false,
-      );
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) {
+      //       return GamePage(
+      //         host: host,
+      //       );
+      //     },
+      //   ),
+      //   (route) => false,
+      // );
+      Get.offNamed(GamePage.routeName, arguments: {'host': host});
     }).subscribe((status, [ref]) async {
       if (status == 'SUBSCRIBED') {
         await _lobbyChannel.track({'player': supabase.auth.currentUser?.id});

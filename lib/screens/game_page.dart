@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/screens/ace_skies.dart';
 import 'package:flutter_socket/screens/main_menu.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GamePage extends StatefulWidget {
-  final String host;
-  const GamePage({required this.host, super.key});
+  static String routeName = '/game-page';
+  const GamePage({super.key});
 
   @override
   State<GamePage> createState() => _GamePageState();
@@ -15,10 +16,12 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   late final AceSkies _aceSkies;
+  var host = Get.arguments['host'];
   RealtimeChannel? _gameChannel;
 
   Future<void> _initialize() async {
     _aceSkies = AceSkies(
+      // Callback to notify the parent when the game ends.
       onGameStateUpdate: (position, health) async {
         ChannelResponse response;
         do {
@@ -31,6 +34,8 @@ class _GamePageState extends State<GamePage> {
           setState(() {});
         } while (response == ChannelResponse.rateLimited && health <= 0);
       },
+
+      // Callback for when the game state updates.
       onGameOver: (playerWon) async {
         await showDialog(
             context: context,
@@ -40,8 +45,7 @@ class _GamePageState extends State<GamePage> {
                 actions: [
                   TextButton(
                       onPressed: () async {
-                        Navigator.of(context)
-                            .pushReplacementNamed(MainMenuScreen.routeName);
+                        Get.offAllNamed(MainMenuScreen.routeName);
                         await supabase.removeChannel(_gameChannel!);
                       },
                       child: const Text('Back to Lobby'))
@@ -62,8 +66,8 @@ class _GamePageState extends State<GamePage> {
     await Future.delayed(Duration.zero);
     _aceSkies.startNewGame();
 
-    _gameChannel = supabase.channel(widget.host,
-        opts: const RealtimeChannelConfig(ack: true));
+    _gameChannel =
+        supabase.channel(host, opts: const RealtimeChannelConfig(ack: true));
 
     _gameChannel!
         .on(RealtimeListenTypes.broadcast, ChannelFilter(event: 'game_state'),

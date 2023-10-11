@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter_socket/game/bullet.dart';
+import 'package:flutter_socket/aceSkies/bullet.dart';
 import 'package:flutter/material.dart';
 
 class Player extends PositionComponent with HasGameRef, CollisionCallbacks {
@@ -12,7 +12,7 @@ class Player extends PositionComponent with HasGameRef, CollisionCallbacks {
 
   Player({required bool isMe}) : _isMyPlayer = isMe;
 
-  /// Whether it's me or the opponent
+  // Whether it's me or the opponent
   final bool _isMyPlayer;
 
   static const radius = 30.0;
@@ -55,8 +55,8 @@ class Player extends PositionComponent with HasGameRef, CollisionCallbacks {
     }
   }
 
-  /// returns the mirrored percent position of the player
-  /// to be broadcasted to other clients
+  // returns the mirrored percent position of the player
+  // to be broadcasted to other clients
   Vector2 getMirroredPercentPosition() {
     final mirroredPosition = gameRef.size - position;
     return Vector2(mirroredPosition.x / gameRef.size.x,

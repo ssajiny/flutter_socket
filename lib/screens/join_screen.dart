@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_socket/main.dart';
 import 'package:flutter_socket/responsive/responsive.dart';
 import 'package:flutter_socket/screens/lobby_screen.dart';
-import 'package:flutter_socket/utils/check_session.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/widgets/custom_button.dart';
 import 'package:flutter_socket/widgets/custom_table.dart';
@@ -37,7 +36,6 @@ class _JoinScreenState extends State<JoinScreen> {
 
   @override
   void initState() {
-    // checkSession(context);
     getRoomInfo();
     super.initState();
   }

@@ -1,8 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flutter_socket/game/bullet.dart';
-import 'package:flutter_socket/game/player.dart';
+import 'package:flutter_socket/aceSkies/bullet.dart';
+import 'package:flutter_socket/aceSkies/player.dart';
 import 'package:flutter_socket/utils/joystick_player.dart';
 import 'package:flame/image_composition.dart' as flame_image;
 
@@ -21,10 +21,10 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
 
   final void Function(Vector2 position, int health) onGameStateUpdate;
 
-  /// `Player` instance of the player
+  // `Player` instance of the player
   late Player _player;
 
-  /// `Player` instance of the opponent
+  // `Player` instance of the opponent
   late Player _opponent;
 
   bool isGameOver = true;
@@ -98,7 +98,7 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
   Future<void> _shootBullets() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    /// Player's bullet
+    // Player's bullet
     final playerBulletInitialPosition = Vector2.copy(_player.position)
       ..y -= Player.radius;
     final playerBulletVelocities = [
@@ -110,12 +110,12 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
       add((Bullet(
         isMine: true,
         velocity: bulletVelocity,
-        image: _playerBulletImage,
+        // image: _playerBulletImage,
         initialPosition: playerBulletInitialPosition,
       )));
     }
 
-    /// Opponent's bullet
+    // Opponent's bullet
     final opponentBulletInitialPosition = Vector2.copy(_opponent.position)
       ..y += Player.radius;
     final opponentBulletVelocities = [
@@ -127,7 +127,7 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
       add((Bullet(
         isMine: false,
         velocity: bulletVelocity,
-        image: _opponentBulletImage,
+        // image: _opponentBulletImage,
         initialPosition: opponentBulletInitialPosition,
       )));
     }
@@ -140,7 +140,7 @@ class AceSkies extends FlameGame with PanDetector, HasCollisionDetection {
     _opponent.updateHealth(health / _initialHealthPoints);
   }
 
-  /// Called when either the player or the opponent has run out of health points
+  // Called when either the player or the opponent has run out of health points
   void endGame(bool playerWon) {
     isGameOver = true;
     onGameOver(playerWon);
