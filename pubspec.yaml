@@ -33,6 +33,7 @@ dependencies:
   supabase_flutter: ^1.10.19
   flame: ^1.9.1
   get: ^4.6.6
+  roulette: ^0.1.5
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_socket/screens/animation_screen.dart';
 import 'package:flutter_socket/screens/game_screen.dart';
 import 'package:flutter_socket/screens/main_menu.dart';
 import 'package:flutter_socket/screens/create_screen.dart';
 import 'package:flutter_socket/screens/join_screen.dart';
 import 'package:flutter_socket/screens/lobby_screen.dart';
 import 'package:flutter_socket/screens/login_screen.dart';
+import 'package:flutter_socket/screens/roulette_screen.dart';
 import 'package:flutter_socket/screens/sign_up_screen.dart';
 import 'package:flutter_socket/utils/colors.dart';
 import 'package:flutter_socket/screens/splash_screen.dart';
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: LobbyScreen.routeName, page: () => const LobbyScreen()),
         GetPage(name: GameScreen.routeName, page: () => const GameScreen()),
       ],
-      home: const SplashScreen(),
+      home: MyAnimation(),
     );
   }
 }
